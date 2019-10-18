@@ -6,6 +6,7 @@ class CONST:
 
 class ARGS:
     SOURCE, DEST = 'source', 'dest'
+    NO_PROGRESS = 'no_progress'
 
 
 class CONFKEYS:
