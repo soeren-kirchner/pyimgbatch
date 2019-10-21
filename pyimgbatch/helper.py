@@ -33,21 +33,8 @@ class Size(object):
 class ProgressBar(tqdm):
 
     def __init__(self, total, disable=True):
-        if not disable:
-            super().__init__(total=total, disable=disable)
-        #self.enabled = enabled
+        #if not disable:
+        super().__init__(total=total, disable=disable)
         self.disable = disable
         self._time = time #fixes a tqdm bug that _time not exist on reset() when disabled
-
-    # def __del__(self):
-    #     if self.enabled:
-    #         super().__del__()
-
-    # def close(self):
-    #     if self.enabled:
-    #         super().close()
-
-    # def reset(self):
-    #     if self.enabled:
-    #         super().reset()
 

@@ -3,21 +3,22 @@
 
 #from imgbatch import *
 
-import imgbatch
 import argparse
 from pprint import pprint
+from .pyimgbatch import PyImgBatch
 
 
 def main():
     """simply main
     """
-    print("Hello World")
+    print("Hello World2")
 
     args = get_args()
     pprint(args)
     print(args.configfile)
-    pib = imgbatch.PyImgBatch(args)
+    pib = PyImgBatch(args)
     pib.exec()
+
 
 
 def get_args():

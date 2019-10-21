@@ -8,8 +8,8 @@ from time import sleep
 from PIL import Image
 #from PIL import ImageCms
 
-from constants import *
-from helper import Size, ProgressBar
+from .constants import *
+from .helper import Size, ProgressBar
 
 
 class PyImgBatch:
