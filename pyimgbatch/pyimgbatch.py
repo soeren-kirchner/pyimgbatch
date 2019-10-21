@@ -18,19 +18,19 @@ class PyImgBatch:
         self.args = vars(args)
         self.config = []
         print(args)
-        raw_config = self._readConfig()
-        self._processConfig(raw_config)
+        raw_config = self._read_config()
+        self._process_config(raw_config)
 
     def __del__(self):
         self._image_progress_bar.close()
         self._main_progress_bar.close()
 
-    def _readConfig(self):
+    def _read_config(self):
         with open(self.args[CONST.CONFIGFILE]) as config_file:
             raw_config = json.load(config_file)
         return raw_config
 
-    def _processConfig(self, raw_config):
+    def _process_config(self, raw_config):
         for entry in raw_config:
             print(entry)
             # resolve websets
