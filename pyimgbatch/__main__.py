@@ -11,8 +11,6 @@ from .pyimgbatch import PyImgBatch
 def main():
     """simply main
     """
-    print("Hello World2")
-
     args = get_args()
     pprint(args)
     print(args.configfile)
@@ -32,7 +30,7 @@ def get_args():
     parser.add_argument('-o', '--override', action='store_true',
                         default=False, help='overrides existing files')
     parser.add_argument('--no-progress', action='store_true',
-                        default=False, help='disable the progress bars')
+                        default=False, help='disables the progress bars')
     return parser.parse_args()
 
 
