@@ -45,8 +45,10 @@ class PyImgBatch:
                 self._create_webset_entries(entry)
             else:
                 self.config.append(entry)
+        logging.debug("raw config:")
         logging.debug(pformat(raw_config))
-        pprint(self.config)
+        logging.debug("solved config:")
+        logging.debug(pformat(self.config))
 
     def _create_webset_entries(self, entry):
         webset_value = entry[CONFKEY.WEBSET]
@@ -59,7 +61,6 @@ class PyImgBatch:
                 self.config.append(new_entry)
         else:
             print("ERROR")
-        print(entry['webset'])
 
     def _create_files_array(self, supported_files=CONST.SUPPORTED_FILES):
         self.source_files_names = [os.path.abspath(file) for ext in supported_files for file in glob(
@@ -76,10 +77,10 @@ class PyImgBatch:
 
     def _process_file(self, source_filename):
         self._image_progress_bar.reset()
+        self._print(f"progressing: {basename(source_filename)}")
+        logging.info(f"progressing: {basename(source_filename)}")
         for entry in self.config:
-            current_image = CurrentImage(self.args, source_filename, ConfigEntry(entry), self._print)
-            self._image_progress_bar.set_description(basename(current_image.source_filename))
-            #self._print(basename(current_image.source_filename) + "\r")
+            current_image = CurrentImage(self.args, source_filename, ConfigEntry(entry), self._print)            
             current_image.generate()
             self._image_progress_bar.update()
 
