@@ -77,7 +77,8 @@ class PyImgBatch:
         self._image_progress_bar.reset()
         for entry in self.config:
             current_image = CurrentImage(self.args, source_filename, ConfigEntry(entry), self._print)
-            self._image_progress_bar.set_description(current_image.source_filename)
+            self._image_progress_bar.set_description(basename(current_image.source_filename))
+            #self._print(basename(current_image.source_filename) + "\r")
             current_image.generate()
             self._image_progress_bar.update()
 
@@ -90,3 +91,4 @@ class PyImgBatch:
     def exec(self):
         self._create_files_array()
         self._process_files()
+
