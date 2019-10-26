@@ -7,6 +7,9 @@ from PIL import ImageCms
 from os.path import basename, join, realpath, exists
 from os import makedirs
 
+import io, sys
+import logging
+
 from .constants import CONFKEY, ARGS
 from .helper import *
 
@@ -77,8 +80,16 @@ class ConfigEntry(object):
 
     @property
     def destination_size(self):
-        return Size(self.config_entry_dict.get(CONFKEY.WIDTH, None), self.config_entry_dict.get(CONFKEY.HEIGHT, None))
+        return Size(self.config_entry_dict.get(CONFKEY.WIDTH, None), 
+                    self.config_entry_dict.get(CONFKEY.HEIGHT, None))
+
+    @property
+    def mode(self):
+        return self.config_entry_dict.get(CONFKEY.MODE, 'RGB')
         
+    @property
+    def color_profile(self):
+        return self.config_entry_dict.get(CONFKEY.COLORPROFILE, None)
 
 class CurrentImage(object):
 
@@ -105,32 +116,80 @@ class CurrentImage(object):
         return join(self.args[ARGS.DEST], self.subfolder)
 
     @property
+    def destination_filename_short(self):
+        return join(self.subfolder, self.destination_basename)
+
+    @property
     def destination_filename(self):
-        #core = self._basename_core(source_file_name)
-        #subfolder = corename if config_entry.get(CONFKEY.SUBFOLDER, True) else ''
         return join(self.destination_folder, self.destination_basename)
 
     def generate(self):
-
-        # self.print(f"exists: {exists(self.destination_filename)}")
-        # self.print(f"override: {self.args[ARGS.OVERRIDE]}")
-        
         if exists(self.destination_filename) and not self.args[ARGS.OVERRIDE]: 
             self.print(f"ignore file: {self.destination_filename}")
             return
 
-        self.print(f"creating: {self.destination_filename}")
+        self.print(f"creating: {self.destination_filename_short}")
+        logging.info(f"creating: {self.destination_filename_short}")
 
         with Image.open(self.source_filename) as image:
+
+            if self.config_entry.mode != image.mode:
+                self.convert(image)
+
+            profile = self.get_image_profile(image)
+            if profile is not None: 
+                pass
+                ##self.print(f"Color Profile: {ImageCms.getProfileName(profile).strip()}")
+
+            ##self.print(image.mode)
+
             destination_size = Size(image.size).destination_size(self.config_entry.destination_size).size
             # self.print(f"source size: {image.size}")
             # self.print(f"dest size: {destination_size}")
-            image = image.resize(destination_size) 
+            image = image.resize(destination_size, resample=Image.HAMMING) 
 
             if not exists(self.destination_folder):
                 makedirs(self.destination_folder)
             
             image.save(self.destination_filename)
+
+
+
+    def convert(self, image):
+        ##self.print("mode differs")
+        source_profile = self.get_image_profile(image)
+        if source_profile is not None:
+            ##self.print("apply transform")
+            ##self.print(ImageCms.getProfileName(source_profile))
+            transform = ImageCms.buildTransform(inputProfile=source_profile, 
+                                                outputProfile=self.profile(), 
+                                                inMode=image.mode, 
+                                                outMode=self.config_entry.mode, 
+                                                renderingIntent=ImageCms.INTENT_RELATIVE_COLORIMETRIC)
+            ImageCms.applyTransform(image, transform)
+        else:
+            ##self.print("amply simple convert")
+            image = image.convert(mode=self.config_entry.mode)
+        return image
+
+
+    def get_image_profile(self, image):
+        try:
+            return ImageCms.ImageCmsProfile(io.BytesIO(image.info.get('icc_profile')))
+        except:
+            return None
+
+    def transform(self, image, source_profile):  
+        dest_profile = self.profile()
+        transform = ImageCms.buildTransform(source_profile, dest_profile, image.mode, "RGB", ImageCms.INTENT_RELATIVE_COLORIMETRIC)
+        ImageCms.applyTransform(image, transform)
+        return image
+
+    def profile(self):
+        if self.config_entry.color_profile is None:
+            return ImageCms.createProfile("sRGB")
+        
+
 
 
 class ProgressBar(tqdm):
