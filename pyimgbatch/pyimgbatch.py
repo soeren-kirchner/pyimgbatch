@@ -1,5 +1,6 @@
 import json
 import os
+import logging
 
 from os.path import basename, join, realpath
 from glob import glob
@@ -7,7 +8,7 @@ from tqdm import tqdm
 from time import sleep
 
 
-from pprint import pprint
+from pprint import pprint, pformat
 
 from .constants import *
 from .core import *
@@ -44,7 +45,7 @@ class PyImgBatch:
                 self._create_webset_entries(entry)
             else:
                 self.config.append(entry)
-        pprint(raw_config)
+        logging.debug(pformat(raw_config))
         pprint(self.config)
 
     def _create_webset_entries(self, entry):
