@@ -1,9 +1,5 @@
-#import pyimgbatch
-#import imgbatch
-
-#from imgbatch import *
-
 import argparse
+import logging
 from pprint import pprint
 from .pyimgbatch import PyImgBatch
 
@@ -11,6 +7,7 @@ from .pyimgbatch import PyImgBatch
 def main():
     """simply main
     """
+    logging.basicConfig(level=logging.DEBUG, filename='pyimgbatch.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
     args = get_args()
     pprint(args)
     print(args.configfile)
