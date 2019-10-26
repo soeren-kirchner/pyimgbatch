@@ -8,13 +8,3 @@ class ARGS:
     SOURCE, DEST = 'source', 'dest'
     NO_PROGRESS = 'no_progress'
     OVERRIDE = 'override'
-
-
-class CONFKEY:
-    PREFIX, SUFFIX = 'prefix', 'suffix'
-    WIDTH, HEIGHT = 'width', 'height'
-    FORMAT = 'format'
-    SUBFOLDER = 'subfolder'
-    WEBSET = 'webset'
-    WEBSETADDON = 'websetaddon'
-    MODE, COLORPROFILE = 'mode', 'colorprofile'
