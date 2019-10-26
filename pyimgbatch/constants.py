@@ -17,3 +17,4 @@ class CONFKEY:
     SUBFOLDER = 'subfolder'
     WEBSET = 'webset'
     WEBSETADDON = 'websetaddon'
+    MODE, COLORPROFILE = 'mode', 'colorprofile'
