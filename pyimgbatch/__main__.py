@@ -23,9 +23,9 @@ def get_args():
     parser.add_argument('-c', '--configfile', type=str,
                         default='imagebatch.json', help='configuration file')
     parser.add_argument('-s', '--source', type=str,
-                        default='source', help='source file')
+                        default='source', help='source folder containing images for batch processing')
     parser.add_argument('-d', '--dest', type=str, default='dest',
-                        help='destination folder for the resized images')
+                        help='destination folder for the processed images')
     parser.add_argument('-o', '--override', action='store_true',
                         default=False, help='overrides existing files')
     parser.add_argument('--no-progress', action='store_true',
