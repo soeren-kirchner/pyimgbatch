@@ -10,13 +10,30 @@ from os import makedirs
 import io, sys
 import logging
 
-from .constants import CONFKEY, ARGS
+from .constants import ARGS
 from .helper import *
+
+RESAMPLE_MODES = {'none': Image.NEAREST,
+                  'bilinear': Image.BILINEAR,
+                  'bicubic': Image.BICUBIC, 
+                  'hamming': Image.HAMMING,
+                  'box': Image.BOX,
+                  'antialias': Image.ANTIALIAS}
+
+class CONFKEY:
+    PREFIX, SUFFIX = 'prefix', 'suffix'
+    WIDTH, HEIGHT = 'width', 'height'
+    RESAMPLE = 'resample'
+    FORMAT = 'format'
+    SUBFOLDER = 'subfolder'
+    WEBSET = 'webset'
+    WEBSETADDON = 'websetaddon'
+    MODE, COLORPROFILE = 'mode', 'colorprofile'
 
 class Size(object):
     def __init__(self, *args):
         if len(args) == 1 and type(args[0]) is tuple:
-            # TODO: to_int_or_none for tuple also
+            # TODO: to_int_or_none for tuple too
             self._size = args[0]
         elif len(args) == 2:
             self._size = (to_int_or_none(args[0]), to_int_or_none(args[1]))
@@ -91,6 +108,23 @@ class ConfigEntry(object):
     def color_profile(self):
         return self.config_entry_dict.get(CONFKEY.COLORPROFILE, None)
 
+    @property
+    def resample(self):
+        resample = self.config_entry_dict.get(CONFKEY.RESAMPLE, 'antialias')
+        if resample in RESAMPLE_MODES:
+            return RESAMPLE_MODES.get(resample)
+        else:
+            return Image.ANTIALIAS
+
+    @property
+    def resample_name(self):
+        resample = self.config_entry_dict.get(CONFKEY.RESAMPLE, 'antialias')
+        if resample in RESAMPLE_MODES:
+            return resample
+        else:
+            return 'antialias'
+
+
 class CurrentImage(object):
 
     def __init__(self, args, source_filename, config_entry, output_method):
@@ -127,51 +161,47 @@ class CurrentImage(object):
         if exists(self.destination_filename) and not self.args[ARGS.OVERRIDE]: 
             self.print(f"ignore file: {self.destination_filename}")
             return
-
-        self.print(f"creating: {self.destination_filename_short}")
-        logging.info(f"creating: {self.destination_filename_short}")
+        else: 
+            self.print(f"creating: {self.destination_filename_short}")
+            logging.info(f"creating: {self.destination_filename_short}")
 
         with Image.open(self.source_filename) as image:
 
             if self.config_entry.mode != image.mode:
+                logging.debug(f"Source and destination mode differ. Source: {image.mode}, Destination: {self.config_entry.mode}")
                 self.convert(image)
 
             profile = self.get_image_profile(image)
             if profile is not None: 
                 pass
-                ##self.print(f"Color Profile: {ImageCms.getProfileName(profile).strip()}")
-
-            ##self.print(image.mode)
+                # TODO needs implementation: should checked and converted together with mode. lines above.
 
             destination_size = Size(image.size).destination_size(self.config_entry.destination_size).size
-            # self.print(f"source size: {image.size}")
-            # self.print(f"dest size: {destination_size}")
-            image = image.resize(destination_size, resample=Image.HAMMING) 
+            resample = self.config_entry.resample
+            logging.debug(f"Resizing Image. Source: {Size(image.size)}, Destination: {destination_size}, Resample: {self.config_entry.resample_name}")
+            image = image.resize(destination_size, resample=resample) 
 
             if not exists(self.destination_folder):
                 makedirs(self.destination_folder)
             
+            logging.debug(f"Writing {self.destination_filename}")
             image.save(self.destination_filename)
 
-
-
     def convert(self, image):
-        ##self.print("mode differs")
         source_profile = self.get_image_profile(image)
         if source_profile is not None:
-            ##self.print("apply transform")
-            ##self.print(ImageCms.getProfileName(source_profile))
+            destination_profile = self.profile()
+            logging.debug(f"Transforming color profiles. Source: {self.profile_name(source_profile)}, Destination: {self.profile_name(destination_profile)} ")
             transform = ImageCms.buildTransform(inputProfile=source_profile, 
-                                                outputProfile=self.profile(), 
+                                                outputProfile=destination_profile, 
                                                 inMode=image.mode, 
                                                 outMode=self.config_entry.mode, 
                                                 renderingIntent=ImageCms.INTENT_RELATIVE_COLORIMETRIC)
             ImageCms.applyTransform(image, transform)
         else:
-            ##self.print("amply simple convert")
+            logging.debug(f"Converting color modes. Source: {image.mode}, Destination: {self.config_entry.mode}")
             image = image.convert(mode=self.config_entry.mode)
         return image
-
 
     def get_image_profile(self, image):
         try:
@@ -179,23 +209,17 @@ class CurrentImage(object):
         except:
             return None
 
-    def transform(self, image, source_profile):  
-        dest_profile = self.profile()
-        transform = ImageCms.buildTransform(source_profile, dest_profile, image.mode, "RGB", ImageCms.INTENT_RELATIVE_COLORIMETRIC)
-        ImageCms.applyTransform(image, transform)
-        return image
+    def profile_name(self, profile):
+        return ImageCms.getProfileName(profile).strip()
 
     def profile(self):
         if self.config_entry.color_profile is None:
             return ImageCms.createProfile("sRGB")
-        
-
 
 
 class ProgressBar(tqdm):
 
     def __init__(self, total, disable=True):
-        # if not disable:
         super().__init__(total=total, disable=disable)
         self.disable = disable
         self._time = time  # fixes a tqdm bug that _time not exist on reset() when disabled
