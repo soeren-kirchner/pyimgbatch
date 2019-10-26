@@ -13,7 +13,6 @@ def main():
         logging.getLogger().setLevel(logging.DEBUG)
 
     logging.debug(args)
-    print(args.configfile)
     pib = PyImgBatch(args)
     pib.exec()
 
