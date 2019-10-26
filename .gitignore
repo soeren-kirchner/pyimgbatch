@@ -26,7 +26,12 @@ docs/_build/
 
 # vscode
 .vscode/
+*.code-workspace
 
 # mac
 .DS_Store
+
+# generated exemples
+examples/**/dest
+pyimgbatch.log
 
