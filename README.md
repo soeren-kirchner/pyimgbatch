@@ -1,6 +1,6 @@
 # PyImgBatch
 
-PyImgBatch ist a batch image processor python including a command line interface.
+PyImgBatch is a batch image processor for python including a command line interface.
 
 
 ## Usage
