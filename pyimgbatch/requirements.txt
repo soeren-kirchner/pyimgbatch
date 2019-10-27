@@ -1,0 +1,4 @@
+Pillow>=6.2.1
+Sphinx>=2.2.0
+sphinx-rtd-theme>=0.4.3
+tqdm>=4.36.1
