@@ -137,11 +137,7 @@ class ConfigEntry(object):
 
     @property
     def resample_name(self):
-        resample = self.config_entry_dict.get(CONFKEY.RESAMPLE, 'antialias')
-        if resample in RESAMPLE_MODES:
-            return resample
-        else:
-            return 'antialias'
+        return [key for key, value in RESAMPLE_MODES.items() if value == self.resample][0]
 
     def _properties_dict(self):
         return {name: getattr(self, name) for name, value in vars(self.__class__).items() if isinstance(value, property)}
