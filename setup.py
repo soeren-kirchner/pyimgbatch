@@ -14,7 +14,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/soeren-kirchner/pyimgbatch",
-    #packages=['pyimgbatch'],
+    # packages=['pyimgbatch'],
     install_requires=requirements,
     packages=setuptools.find_packages(),
     classifiers=[
