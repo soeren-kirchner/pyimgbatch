@@ -44,10 +44,29 @@ class CONFKEY:
     MODE, COLORPROFILE = 'mode', 'colorprofile'
 
 
-class Options(object):
+class Entries(object):
+
+    def __init__(self, dict):
+        self.dict = dict
+
+    def _value(self, key, default, warning=False):
+        if key not in self.dict:
+            msg = "{self.__class__} {key} not set. Using default value: {default}"
+            if warning:
+                logging.warning(msg)
+            else:
+                logging.debug(msg)
+        return self.dict.get(key, default)
+
+    def properties(self):
+        return {name: getattr(self, name) for name, value in vars(self.__class__).items() if isinstance(value, property)}
+
+
+class Options(Entries):
 
     def __init__(self, options_dict):
-        self.options_dict = options_dict
+        super().__init__(options_dict)
+        # self.options_dict = options_dict
 
     @property
     def source(self):
@@ -71,19 +90,19 @@ class Options(object):
 
     @property
     def debug(self):
-        return self.options_dict.get('debug', False)
+        return self._value('debug', False)
 
-    def _value(self, key, default, warning=False):
-        if key not in self.options_dict:
-            msg = "Option {key} not set. Using default value: {default}"
-            if warning:
-                logging.warning(msg)
-            else:
-                logging.debug(msg)
-        return self.options_dict.get(key, default)
+    # def _value(self, key, default, warning=False):
+    #     if key not in self.options_dict:
+    #         msg = "Option {key} not set. Using default value: {default}"
+    #         if warning:
+    #             logging.warning(msg)
+    #         else:
+    #             logging.debug(msg)
+    #     return self.options_dict.get(key, default)
 
-    def _properties_dict(self):
-        return {name: getattr(self, name) for name, value in vars(self.__class__).items() if isinstance(value, property)}
+    # def _properties_dict(self):
+    #     return {name: getattr(self, name) for name, value in vars(self.__class__).items() if isinstance(value, property)}
 
     def __str__(self):
         return str(self.__dict__)
@@ -92,6 +111,7 @@ class Options(object):
 class ConfigEntry(object):
 
     def __init__(self, config_entry_dict):
+        # super().__init__(config_entry_dict)
         self.config_entry_dict = config_entry_dict
 
     @property
@@ -239,7 +259,8 @@ class PyImgBatch:
 
     def __init__(self, args):
         self.options = Options(args)
-        pprint(self.options._properties_dict())
+        pprint("properties: ")
+        pprint(self.options.properties())
 
         self.config = []
 
