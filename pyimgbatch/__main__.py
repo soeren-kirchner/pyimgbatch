@@ -1,21 +1,23 @@
 import argparse
 import logging
-from pprint import pprint
+# from pprint import pprint
 from .pyimgbatch import PyImgBatch
 
 
 def main():
     """simply main
     """
-    logging.basicConfig(level=logging.DEBUG, filename='pyimgbatch.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+    logging.basicConfig(level=logging.DEBUG,
+                        filename='pyimgbatch.log',
+                        filemode='w',
+                        format='%(name)s - %(levelname)s - %(message)s')
     args = get_args()
     if args.debug:
         logging.getLogger().setLevel(logging.DEBUG)
 
     logging.debug(args)
-    pib = PyImgBatch(args)
+    pib = PyImgBatch(vars(args))
     pib.exec()
-
 
 
 def get_args():
