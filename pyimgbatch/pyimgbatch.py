@@ -1,8 +1,7 @@
 import json
-import os
 import logging
 
-from os.path import basename, join, exists
+from os.path import basename, join, exists, abspath
 from glob import glob
 from tqdm import tqdm
 
@@ -33,7 +32,16 @@ RESAMPLE_MODES = {'none': Image.NEAREST,
                   'antialias': Image.ANTIALIAS}
 
 
-class CONFKEY:
+class CONSTANTS(type):
+
+    def available_options(cls):
+        return [option for option_constant, option in cls.__dict__.items() if type(option).__name__ == 'str' and option_constant.isupper()]
+
+    def __contains__(cls, option):
+        return option in cls.available_options()
+
+
+class CONFKEY(metaclass=CONSTANTS):
     PREFIX, SUFFIX = 'prefix', 'suffix'
     WIDTH, HEIGHT = 'width', 'height'
     RESAMPLE = 'resample'
@@ -44,22 +52,36 @@ class CONFKEY:
     MODE, COLORPROFILE = 'mode', 'colorprofile'
 
 
+class OPTIONKEY(metaclass=CONSTANTS):
+    SOURCE, DEST = 'source', 'dest'
+    CONFIGFILE = 'configfile'
+    OVERRIDE = 'override'
+    NOPROGRESS = 'no_progress'
+    DEBUG = 'debug'
+
+
 class Entries(object):
 
     def __init__(self, dict):
         self.dict = dict
+        self.shown_messages = []
 
     def _value(self, key, default, warning=False):
         if key not in self.dict:
-            msg = "{self.__class__} {key} not set. Using default value: {default}"
-            if warning:
-                logging.warning(msg)
-            else:
-                logging.debug(msg)
+            msg = f"{self.__class__.__name__}: entry '{key}' not set. Using default value: {default}"
+            if msg not in self.shown_messages:
+                self.shown_messages.append(msg)
+                if warning:
+                    logging.warning(msg)
+                else:
+                    logging.debug(msg)
         return self.dict.get(key, default)
 
     def properties(self):
         return {name: getattr(self, name) for name, value in vars(self.__class__).items() if isinstance(value, property)}
+
+    def __str__(self):
+        return str(self.__dict__)
 
 
 class Options(Entries):
@@ -70,86 +92,70 @@ class Options(Entries):
 
     @property
     def source(self):
-        return self._value('source', 'source')
+        return self._value(OPTIONKEY.SOURCE, OPTIONKEY.SOURCE)
 
     @property
     def dest(self):
-        return self._value('dest', 'dest')
+        return self._value(OPTIONKEY.DEST, OPTIONKEY.DEST)
 
     @property
     def configfile(self):
-        return self._value('configfile', 'imagebatch.json')
+        return self._value(OPTIONKEY.CONFIGFILE, 'imagebatch.json')
 
     @property
     def override(self):
-        return self._value('override', False)
+        return self._value(OPTIONKEY.OVERRIDE, False)
 
     @property
     def no_progress(self):
-        return self._value('no_progress', False)
+        return self._value(OPTIONKEY.NOPROGRESS, False)
 
     @property
     def debug(self):
-        return self._value('debug', False)
-
-    # def _value(self, key, default, warning=False):
-    #     if key not in self.options_dict:
-    #         msg = "Option {key} not set. Using default value: {default}"
-    #         if warning:
-    #             logging.warning(msg)
-    #         else:
-    #             logging.debug(msg)
-    #     return self.options_dict.get(key, default)
-
-    # def _properties_dict(self):
-    #     return {name: getattr(self, name) for name, value in vars(self.__class__).items() if isinstance(value, property)}
-
-    def __str__(self):
-        return str(self.__dict__)
+        return self._value(OPTIONKEY.DEBUG, False)
 
 
-class ConfigEntry(object):
+class ConfigEntry(Entries):
 
     def __init__(self, config_entry_dict):
-        # super().__init__(config_entry_dict)
-        self.config_entry_dict = config_entry_dict
+        super().__init__(config_entry_dict)
 
     @property
     def prefix(self):
-        return self.config_entry_dict.get(CONFKEY.PREFIX, '')
+        return self._value(CONFKEY.PREFIX, '')
 
     @property
     def suffix(self):
-        return self.config_entry_dict.get(CONFKEY.SUFFIX, '')
+        return self._value(CONFKEY.SUFFIX, '')
 
     @property
     def websetaddon(self):
-        return self.config_entry_dict.get(CONFKEY.WEBSETADDON, '')
+        return self._value(CONFKEY.WEBSETADDON, '')
 
     @property
     def ext(self):
-        return self.config_entry_dict.get(CONFKEY.FORMAT, 'jpg')
+        return self._value(CONFKEY.FORMAT, 'jpg')
 
     @property
     def with_subfolder(self):
-        return self.config_entry_dict.get(CONFKEY.WEBSETADDON, '')
+        return self._value(CONFKEY.WEBSETADDON, '')
 
     @property
     def destination_size(self):
-        return Size(self.config_entry_dict.get(CONFKEY.WIDTH, None),
-                    self.config_entry_dict.get(CONFKEY.HEIGHT, None))
+        return Size(self._value(CONFKEY.WIDTH, None),
+                    self._value(CONFKEY.HEIGHT, None))
 
     @property
     def mode(self):
-        return self.config_entry_dict.get(CONFKEY.MODE, 'RGB')
+        return self._value(CONFKEY.MODE, 'RGB')
 
     @property
     def color_profile(self):
-        return self.config_entry_dict.get(CONFKEY.COLORPROFILE, None)
+        return self._value(CONFKEY.COLORPROFILE, None)
 
     @property
     def resample(self):
-        resample = self.config_entry_dict.get(CONFKEY.RESAMPLE, 'antialias')
+        resample = self._value(CONFKEY.RESAMPLE, 'antialias')
         if resample in RESAMPLE_MODES:
             return RESAMPLE_MODES.get(resample)
         else:
@@ -158,9 +164,6 @@ class ConfigEntry(object):
     @property
     def resample_name(self):
         return [key for key, value in RESAMPLE_MODES.items() if value == self.resample][0]
-
-    def _properties_dict(self):
-        return {name: getattr(self, name) for name, value in vars(self.__class__).items() if isinstance(value, property)}
 
 
 class CurrentImage(object):
@@ -244,7 +247,7 @@ class CurrentImage(object):
     def get_image_profile(self, image):
         try:
             return ImageCms.ImageCmsProfile(io.BytesIO(image.info.get('icc_profile')))
-        except Exception as exeption:
+        except:
             return None
 
     def profile_name(self, profile):
@@ -259,9 +262,6 @@ class PyImgBatch:
 
     def __init__(self, args):
         self.options = Options(args)
-        pprint("properties: ")
-        pprint(self.options.properties())
-
         self.config = []
 
         raw_config = self._read_config()
@@ -302,9 +302,8 @@ class PyImgBatch:
             print("ERROR")
 
     def _create_files_array(self, supported_files=SUPPORTED_FILES):
-        self.source_files_names = [os.path.abspath(file) for ext in supported_files for file in glob(
-            os.path.join(self.options.source, ext))]
-        print(self.source_files_names)
+        self.source_files_names = [abspath(file) for ext in supported_files for file in glob(join(self.options.source, ext))]
+        pprint(self.source_files_names)
 
     def _process_files(self):
         # TODO: Format the progress bars more meanfully
