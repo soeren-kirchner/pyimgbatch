@@ -1,6 +1,8 @@
 import json
 import logging
+import io
 
+from os import makedirs
 from os.path import basename, join, exists, abspath
 from glob import glob
 from tqdm import tqdm
@@ -12,14 +14,8 @@ from time import time
 from PIL import Image
 from PIL import ImageCms
 
-# from os.path import basename, join, realpath, exists
-from os import makedirs
-
-import io
-
-
-# from .core import CurrentImage, CONFKEY, ConfigEntry, ProgressBar
 from .helper import to_int_or_none
+
 
 WEBSETS = {'@2x': 2, '@3x': 3}
 SUPPORTED_FILES = ['*.jpg', '*.jpeg', '*.png', '*.tif']
