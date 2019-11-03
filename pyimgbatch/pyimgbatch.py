@@ -31,6 +31,8 @@ RESAMPLE_MODES = {'none': Image.NEAREST,
                   'box': Image.BOX,
                   'antialias': Image.ANTIALIAS}
 
+out = None
+
 
 class CONSTANTS(type):
 
@@ -58,12 +60,15 @@ class OPTIONKEY(metaclass=CONSTANTS):
     OVERRIDE = 'override'
     NOPROGRESS = 'no_progress'
     DEBUG = 'debug'
+    PROJECTS, CONFIGS = 'projects', 'configs'
+    NAME = 'name'
 
 
 class Entries(object):
 
-    def __init__(self, dict):
+    def __init__(self, dict, defaults=None):
         self.dict = dict
+        self.defaults = defaults
         self.shown_messages = []
 
     def _value(self, key, default, warning=False):
@@ -75,20 +80,16 @@ class Entries(object):
                     logging.warning(msg)
                 else:
                     logging.debug(msg)
-        return self.dict.get(key, default)
+        if self.defaults is None:
+            return self.dict.get(key, default)
+        else:
+            return self.dict.get(key, self.defaults._value(key, default))
 
     def properties(self):
         return {name: getattr(self, name) for name, value in vars(self.__class__).items() if isinstance(value, property)}
 
     def __str__(self):
-        return str(self.__dict__)
-
-
-class Options(Entries):
-
-    def __init__(self, options_dict):
-        super().__init__(options_dict)
-        # self.options_dict = options_dict
+        return str(self.dict)
 
     @property
     def source(self):
@@ -98,9 +99,13 @@ class Options(Entries):
     def dest(self):
         return self._value(OPTIONKEY.DEST, OPTIONKEY.DEST)
 
-    @property
+    @property  # TODO: replace
     def configfile(self):
         return self._value(OPTIONKEY.CONFIGFILE, 'imagebatch.json')
+
+    @property
+    def project_file_name(self):
+        return self._value('project_file', 'pyimgbatch.json')  # TODO: Constants
 
     @property
     def override(self):
@@ -114,11 +119,9 @@ class Options(Entries):
     def debug(self):
         return self._value(OPTIONKEY.DEBUG, False)
 
-
-class ConfigEntry(Entries):
-
-    def __init__(self, config_entry_dict):
-        super().__init__(config_entry_dict)
+    @property
+    def project_name(self):
+        return self._value(OPTIONKEY.NAME, '')
 
     @property
     def prefix(self):
@@ -166,13 +169,92 @@ class ConfigEntry(Entries):
         return [key for key, value in RESAMPLE_MODES.items() if value == self.resample][0]
 
 
+class Args(Entries):
+    pass
+
+
+class Options(Entries):
+
+    def __init__(self, dict, defaults):
+        if dict is not None:
+            super().__init__(dict, defaults)
+        else:
+            with open(defaults.project_file_name) as project_file:
+                self.dict = json.load(project_file)
+                super().__init__(self.dict, defaults=defaults)
+
+    def get_projects(self):
+        return self._value(OPTIONKEY.PROJECTS, None)
+
+    def exec(self):
+        # TODO: Error if there is no project
+        Out.init_image_bar(self.no_progress)
+        Out.init_project_bar(self.no_progress)
+        for project in self.get_projects():
+            Project(project, defaults=self).exec()
+
+
+class Project(Entries):
+
+    def exec(self):
+        configs = self._process_configs(self._get_configs())
+        filenames = self._file_names()
+        Out.project_bar.reset(total=len(filenames))
+
+        Out.out(f"Processing project '{self.project_name}':")
+
+        for filename in filenames:
+            # TODO: Error if there is no config entry
+            Out.image_bar.reset(total=len(configs))
+            for config in configs:
+                CurrentImage(filename, ConfigEntry(config, defaults=self)).generate()
+                Out.image_bar.update()
+            Out.project_bar.update()
+
+    def _get_configs(self):
+        return self._value(OPTIONKEY.CONFIGS, None)
+
+    def _process_configs(self, raw_config):
+        configs = []
+        for entry in raw_config:
+            # resolve websets
+            if CONFKEY.WEBSET in entry:
+                configs.extend(self._create_webset_entries(entry))
+            else:
+                configs.append(entry)
+        logging.debug("raw config:")
+        logging.debug(pformat(raw_config))
+        logging.debug("solved config:")
+        logging.debug(pformat(configs))
+        return configs
+
+    def _create_webset_entries(self, entry):
+        configs = []
+        webset_value = entry[CONFKEY.WEBSET]
+        if webset_value in WEBSETS:
+            for index in range(1, WEBSETS[webset_value] + 1):
+                new_entry = entry.copy()
+                new_entry.update({CONFKEY.WIDTH: to_int_or_none(entry.get(CONFKEY.WIDTH, None), multiplier=index)})
+                new_entry.update({CONFKEY.HEIGHT: to_int_or_none(entry.get(CONFKEY.HEIGHT, None), multiplier=index)})
+                new_entry.update({CONFKEY.WEBSETADDON: f"@{index}x"})
+                configs.append(new_entry)
+        else:
+            print("ERROR")
+        return configs
+
+    def _file_names(self, supported_files=SUPPORTED_FILES):
+        return [abspath(file) for ext in supported_files for file in glob(join(self.source, ext))]
+
+
+class ConfigEntry(Entries):
+    pass
+
+
 class CurrentImage(object):
 
-    def __init__(self, options, source_filename, config_entry, output_method):
-        self.options = options
+    def __init__(self, source_filename, config_entry):
         self.source_filename = source_filename
         self.config_entry = config_entry
-        self.print = output_method
 
     @property
     def corename(self):
@@ -188,7 +270,7 @@ class CurrentImage(object):
 
     @property
     def destination_folder(self):
-        return join(self.options.dest, self.subfolder)
+        return join(self.config_entry.dest, self.subfolder)
 
     @property
     def destination_filename_short(self):
@@ -199,7 +281,8 @@ class CurrentImage(object):
         return join(self.destination_folder, self.destination_basename)
 
     def generate(self):
-        if exists(self.destination_filename) and not self.options.override:
+        self.print = Out.out  # TODO: refactor
+        if exists(self.destination_filename) and not self.config_entry.override:
             self.print(f"ignore file: {self.destination_filename}")
             return
         else:
@@ -207,7 +290,6 @@ class CurrentImage(object):
             logging.info(f"creating: {self.destination_filename_short}")
 
         with Image.open(self.source_filename) as image:
-
             if self.config_entry.mode != image.mode:
                 logging.debug(f"Source and destination mode differ. Source: {image.mode}, Destination: {self.config_entry.mode}")
                 self.convert(image)
@@ -260,77 +342,12 @@ class CurrentImage(object):
 
 class PyImgBatch:
 
-    def __init__(self, args):
-        self.options = Options(args)
-        self.config = []
-
-        raw_config = self._read_config()
-        self._process_config(raw_config)
-
-    def __del__(self):
-        self._image_progress_bar.close()
-        self._main_progress_bar.close()
-
-    def _read_config(self):
-        with open(self.options.configfile) as config_file:
-            raw_config = json.load(config_file)
-        return raw_config
-        # TODO: read from stdin
-
-    def _process_config(self, raw_config):
-        for entry in raw_config:
-            # resolve websets
-            if CONFKEY.WEBSET in entry:
-                self._create_webset_entries(entry)
-            else:
-                self.config.append(entry)
-        logging.debug("raw config:")
-        logging.debug(pformat(raw_config))
-        logging.debug("solved config:")
-        logging.debug(pformat(self.config))
-
-    def _create_webset_entries(self, entry):
-        webset_value = entry[CONFKEY.WEBSET]
-        if webset_value in WEBSETS:
-            for index in range(1, WEBSETS[webset_value] + 1):
-                new_entry = entry.copy()
-                new_entry.update({CONFKEY.WIDTH: to_int_or_none(entry.get(CONFKEY.WIDTH, None), multiplier=index)})
-                new_entry.update({CONFKEY.HEIGHT: to_int_or_none(entry.get(CONFKEY.HEIGHT, None), multiplier=index)})
-                new_entry.update({CONFKEY.WEBSETADDON: f"@{index}x"})
-                self.config.append(new_entry)
-        else:
-            print("ERROR")
-
-    def _create_files_array(self, supported_files=SUPPORTED_FILES):
-        self.source_files_names = [abspath(file) for ext in supported_files for file in glob(join(self.options.source, ext))]
-        pprint(self.source_files_names)
-
-    def _process_files(self):
-        # TODO: Format the progress bars more meanfully
-        self._image_progress_bar = ProgressBar(len(self.config), disable=self.options.no_progress)
-        self._main_progress_bar = ProgressBar(len(self.source_files_names), disable=self.options.no_progress)
-        for source_file_name in self.source_files_names:
-            self._process_file(source_file_name)
-            self._main_progress_bar.update()
-
-    def _process_file(self, source_filename):
-        self._image_progress_bar.reset()
-        self._print(f"progressing: {basename(source_filename)}")
-        logging.info(f"progressing: {basename(source_filename)}")
-        for entry in self.config:
-            current_image = CurrentImage(self.options, source_filename, ConfigEntry(entry), self._print)
-            current_image.generate()
-            self._image_progress_bar.update()
-
-    def _print(self, *args):
-        if not self.options.no_progress:
-            self._image_progress_bar.write(*args)
-        else:
-            print(*args)
+    def __init__(self, args_dict, options_dict=None):
+        self.args = Args(args_dict)
+        self.options = Options(options_dict, defaults=self.args)
 
     def exec(self):
-        self._create_files_array()
-        self._process_files()
+        self.options.exec()
 
 
 class Size(object):
@@ -379,3 +396,35 @@ class ProgressBar(tqdm):
         super().__init__(total=total, disable=disable)
         self.disable = disable
         self._time = time  # fixes a tqdm bug that _time not exist on reset() when disabled
+
+
+class Out:
+
+    outfunction = print
+    project_bar = None
+    image_bar = None
+
+    @classmethod
+    def out(cls, *args):
+        cls.outfunction(*args)
+
+    @classmethod
+    def __call__(cls, *args):
+        cls.out(*args)
+
+    @classmethod
+    def init_project_bar(cls, disable=True):
+        cls.project_bar = ProgressBar(1, disable=disable)
+        if disable:
+            cls.outfunction = print
+        else:
+            cls.outfunction = cls.project_bar.write
+
+    @classmethod
+    def init_image_bar(cls, disable=True):
+        cls.image_bar = ProgressBar(1, disable=disable)
+
+    @classmethod
+    def __del__(cls):
+        cls.image_bar.close()
+        cls.project_bar.close()

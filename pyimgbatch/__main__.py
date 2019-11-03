@@ -24,6 +24,8 @@ def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--configfile', type=str,
                         default='imagebatch.json', help='configuration file')
+    parser.add_argument('-p', '--project', type=str,
+                        default='pyimagebatch.json', help='configuration file')
     parser.add_argument('-s', '--source', type=str,
                         default='source', help='source folder containing images for batch processing')
     parser.add_argument('-d', '--dest', type=str, default='dest',

@@ -1,0 +1,34 @@
+{
+    "comment": "test pyImgBatch",
+    "debug": true,
+    "no-progess": false,
+    "projects" : [
+        {
+            "name" : "web set",
+            "comment" : "some sample pictures",
+            "source" : "web_set/source",
+            "dest" : "web_set/dest",
+            "prefix" : "default-prefix.",
+            "configs" : [
+            { "width": 180, "suffix": ".w180", "webset": "@3x" },
+            { "width": 300, "suffix": ".w400", "webset": "@3x" },
+                { "width": 400, "suffix": ".w400", "webset": "@3x" },
+                { "height": 800, "prefix": "preview.", "webset": "@3x" }
+            ]
+        },
+        {
+            "name" : "assets of project y",
+            "source" : "/folder/of/project/x/source/images",
+            "dest" : "/folder/of/project/x/results",
+            "subfolder" : false,
+            "prefix": "web.",
+            "configs" : [
+                { "width": 200, "suffix": ".mini", "webset": "@3x" },
+                { "width": 250, "suffix": ".midi", "webset": "@3x" },
+                { "height": 1800, "prefix": "big.", "subfolder": true}
+            ]
+        }
+    ]
+}
+
+
