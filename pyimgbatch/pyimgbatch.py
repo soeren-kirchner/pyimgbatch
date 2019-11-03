@@ -5,7 +5,7 @@ from os.path import basename, join, exists, abspath
 from glob import glob
 from tqdm import tqdm
 
-from pprint import pprint, pformat
+from pprint import pformat
 
 from time import time
 
@@ -30,8 +30,6 @@ RESAMPLE_MODES = {'none': Image.NEAREST,
                   'hamming': Image.HAMMING,
                   'box': Image.BOX,
                   'antialias': Image.ANTIALIAS}
-
-out = None
 
 
 class CONSTANTS(type):
