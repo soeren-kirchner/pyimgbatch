@@ -29,12 +29,13 @@ RESAMPLE_MODES = {'none': Image.NEAREST,
 
 
 class CONSTANTS(type):
+    pass
 
-    def available_options(cls):
-        return [option for option_constant, option in cls.__dict__.items() if type(option).__name__ == 'str' and option_constant.isupper()]
+    # def available_options(cls):
+    #     return [option for option_constant, option in cls.__dict__.items() if type(option).__name__ == 'str' and option_constant.isupper()]
 
-    def __contains__(cls, option):
-        return option in cls.available_options()
+    # def __contains__(cls, option):
+    #     return option in cls.available_options()
 
 
 class CONFKEY(metaclass=CONSTANTS):
@@ -79,8 +80,8 @@ class Entries(object):
         else:
             return self.dict.get(key, self.defaults._value(key, default))
 
-    def properties(self):
-        return {name: getattr(self, name) for name, value in vars(self.__class__).items() if isinstance(value, property)}
+    # def properties(self):
+    #     return {name: getattr(self, name) for name, value in vars(self.__class__).items() if isinstance(value, property)}
 
     def __str__(self):
         return str(self.dict)
@@ -99,7 +100,7 @@ class Entries(object):
 
     @property
     def project_file_name(self):
-        return self._value('project_file', 'pyimgbatch.json')  # TODO: Constants
+        return self._value('project', 'pyimgbatch.json')  # TODO: Constants
 
     @property
     def override(self):
@@ -173,9 +174,28 @@ class Options(Entries):
         if dict is not None:
             super().__init__(dict, defaults)
         else:
-            with open(defaults.project_file_name) as project_file:
-                self.dict = json.load(project_file)
-                super().__init__(self.dict, defaults=defaults)
+            if exists(defaults.project_file_name):
+                self._init_from_file(dict, defaults)
+            else:
+                dict = {"projects": [{"configs": [{}]}]}
+                super().__init__(dict, defaults=defaults)
+
+    def _init_from_file(self, dict, defaults):
+        with open(defaults.project_file_name) as project_file:
+            dict = json.load(project_file)  # TODO: Error Handling
+            if (type(dict).__name__ == "dict"):
+                if "projects" in dict:
+                    self.dict = dict
+                elif "configs" in dict:
+                    self.dict = {"projects": [dict]}
+                else:
+                    print("error")  # TODO: Error Handling
+            elif (type(dict).__name__ == "list"):
+                self.dict = {"projects": [{"configs": dict}]}
+            else:
+                print("error")  # TODO: Error Handling
+
+            super().__init__(self.dict, defaults=defaults)
 
     def get_projects(self):
         return self._value(OPTIONKEY.PROJECTS, None)
@@ -368,6 +388,7 @@ class Size(object):
         return self._size
 
     def destination_size(self, designated_size):
+        # print(designated_size)
         if designated_size.width is not None and designated_size.height is not None:
             return designated_size
         elif designated_size.width is None and designated_size.height is not None:
@@ -375,7 +396,8 @@ class Size(object):
         elif designated_size.width is not None and designated_size.height is None:
             return Size(designated_size.width, int(self.height / (self.width / designated_size.width)))
         else:
-            raise Exception("Destination size not computable")
+            logging.info("No 'width' or 'height' were given. Using 'width' and 'height' of the source file")
+            return Size(self.size)
 
     def __call__(self):
         return self._size
