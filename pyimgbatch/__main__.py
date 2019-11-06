@@ -27,7 +27,7 @@ def get_args():
     parser.add_argument('-p', '--project', type=str,
                         default='pyimagebatch.json', help='configuration file')
     parser.add_argument('-s', '--source', type=str,
-                        default='source', help='source folder containing images for batch processing')
+                        default='.', help='source folder containing images for batch processing')
     parser.add_argument('-d', '--dest', type=str, default='dest',
                         help='destination folder for the processed images')
     parser.add_argument('-o', '--override', action='store_true',
@@ -36,6 +36,12 @@ def get_args():
                         default=False, help='disables the progress bars')
     parser.add_argument('--debug', action='store_true',
                         default=False, help='disables the progress bars')
+
+    parser.add_argument('--width', type=int,
+                        default=None, help='...')
+    parser.add_argument('--height', type=int,
+                        default=None, help='...')
+
     return parser.parse_args()
 
 
