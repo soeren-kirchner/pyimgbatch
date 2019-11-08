@@ -21,7 +21,7 @@ and type
 ```
 pyimgbatch --width 300
 ```
-This will resize all supported image files in the current folder to a width of 300 pixels respecting the aspect ratio of the source file. The results will be written to a 'dest' subfolder.
+This will resize all supported image files in the current folder to a width of 300 pixels respecting the aspect ratio of the source file. The results will be written to a "dest" subfolder.
 
 Alternatively, you can set a source folder with the images to be converted and/or a destination folder for the results as follow.
 
@@ -50,7 +50,7 @@ Here an example of a very short one.
     { "height": 1200, "suffix": ".h1200" }
 ]
 ```
-For example (may the project named 'myprj.json'):
+For example (may the project named "myprj.json"):
 ```
 pyimgbatch -c myprj.json
 ```
@@ -72,7 +72,7 @@ and creates two images per source images, resized to the specified width or heig
 
 ### The short one
 
-Imagine, you need to create different sizes for all your images for your web project. For instance, you need the images in widths 180px, 300px, 400px and one in a height of 800 and each 2x and 3x the size for higher pixel density display like in smartphones.
+Imagine, you need to create different sizes for all your images for your web project. For instance, you need the images in widths 180px, 300px, 400px and one in a height of 800 and each 2x and 3x the size for higher pixel density display like in smartphones.
 An example could look as follow.
 
 ```JSON
@@ -90,7 +90,7 @@ An example could look as follow.
     ]
 }
 ```
-This will create 12 destination images for each imput image. For a image 'lama-4540160.jpg' you get:
+This will create 12 destination images for each imput image. For a image "lama-4540160.jpg" you get:
 
 ```
 creating: lama-4540160/web.lama-4540160.w180@1x.jpg
@@ -108,7 +108,7 @@ creating: lama-4540160/preview.lama-4540160@3x.jpg
 ```
 
 As you see you can specify defaults, so you don't need to repeat yourself.
-The more specific option is used instead of the more general one. So in this example, all images get the prefix 'web.' except the last, because the more specific prefix is here given as 'preview.'
+The more specific option is used instead of the more general one. So in this example, all images get the prefix "web." except the last, because the more specific prefix is here given as "preview."
 
 *Hint: The file names are a little strange because I've downloaded the from the free image stock [pixabay](https://pixabay.com) and I haven't changed the Name so you can search for the pics or the photographer if you want.*
 
