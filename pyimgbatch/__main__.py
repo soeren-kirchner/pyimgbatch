@@ -14,10 +14,16 @@ def main():
     args = get_args()
     if args.debug:
         logging.getLogger().setLevel(logging.DEBUG)
-
     logging.debug(args)
-    pib = PyImgBatch(vars(args))
+
+    pib = PyImgBatch(prepare_arguments(args))
     pib.exec()
+
+
+def prepare_arguments(args):
+    args_prep = vars(args)
+    args_prep['subfolder'] = not args_prep['nosubfolder']
+    return args_prep
 
 
 def get_args():
@@ -25,7 +31,7 @@ def get_args():
 
     file_handling_group = parser.add_argument_group('file handling')
     file_handling_group.add_argument('-c', '--configfile', type=str,
-                                     default='imagebatch.json', help='configuration file')
+                                     default='imagebatch.json', help='configuration file')  # TODO: remove
     file_handling_group.add_argument('-p', '--project', type=str,
                                      default='pyimagebatch.json', help='configuration file')
     file_handling_group.add_argument('-s', '--source', type=str,
@@ -33,6 +39,8 @@ def get_args():
     file_handling_group.add_argument('-d', '--dest', type=str, default='dest',
                                      help='destination folder for the processed images')
     file_handling_group.add_argument('-o', '--override', action='store_true',
+                                     default=False, help='overrides existing files')
+    file_handling_group.add_argument('--nosubfolder', action='store_true',
                                      default=False, help='overrides existing files')
 
     output_group = parser.add_argument_group('output / user interaction')

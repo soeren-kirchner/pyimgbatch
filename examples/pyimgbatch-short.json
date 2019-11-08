@@ -3,10 +3,10 @@
     "comment": "some sample pictures",
     "source": "webset/source",
     "dest": "webset/dest",
-    "prefix": "default-prefix.",
+    "prefix": "web.",
     "configs": [
         { "width": 180, "suffix": ".w180", "webset": "@3x" },
-        { "width": 300, "suffix": ".w400", "webset": "@3x" },
+        { "width": 300, "suffix": ".w300", "webset": "@3x" },
         { "width": 400, "suffix": ".w400", "webset": "@3x" },
         { "height": 800, "prefix": "preview.", "webset": "@3x" }
     ]

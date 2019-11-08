@@ -136,7 +136,7 @@ class Entries(object):
 
     @property
     def with_subfolder(self):
-        return self._value(CONFKEY.WEBSETADDON, '')
+        return self._value(CONFKEY.SUBFOLDER, False)
 
     @property
     def destination_size(self):
