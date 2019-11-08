@@ -1,8 +1,8 @@
 {
     "name": "web set",
     "comment": "some sample pictures",
-    "source": "web_set/source",
-    "dest": "web_set/dest",
+    "source": "webset/source",
+    "dest": "webset/dest",
     "prefix": "default-prefix.",
     "configs": [
         { "width": 180, "suffix": ".w180", "webset": "@3x" },
