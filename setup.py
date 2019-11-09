@@ -10,7 +10,7 @@ setuptools.setup(
     name="pyimgbatch",
     author="Sören Kirchner",
     author_email="sk@tologo.de",
-    description="A small example package",
+    description="PyImgBatch is a batch image processor for python including a command line interface.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/soeren-kirchner/pyimgbatch",
