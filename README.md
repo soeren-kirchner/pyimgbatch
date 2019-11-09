@@ -56,14 +56,14 @@ pyimgbatch -c myprj.json
 ```
 produces the following output:
 ```
-progressing: french-bulldog-4530685.jpg
+processing: french-bulldog-4530685.jpg
 creating: french-bulldog-4530685.w1000.jpg
 creating: french-bulldog-4530685.h1200.jpg
-progressing: coast-4478424.jpg
+processing: coast-4478424.jpg
 creating: coast-4478424.w1000.jpg
 creating: coast-4478424.h1200.jpg
 ...
-pprogressing: beaded-2137080_1920-cmyk-iso-eci.tif
+processing: beaded-2137080_1920-cmyk-iso-eci.tif
 creating: beaded-2137080_1920-cmyk-iso-eci.w1000.jpg
 creating: beaded-2137080_1920-cmyk-iso-eci.h1200.jpg
 ...
@@ -93,6 +93,7 @@ An example could look as follow.
 This will create 12 destination images for each imput image. For a image "lama-4540160.jpg" you get:
 
 ```
+...
 creating: lama-4540160/web.lama-4540160.w180@1x.jpg
 creating: lama-4540160/web.lama-4540160.w180@2x.jpg
 creating: lama-4540160/web.lama-4540160.w180@3x.jpg
@@ -105,6 +106,7 @@ creating: lama-4540160/web.lama-4540160.w400@3x.jpg
 creating: lama-4540160/preview.lama-4540160@1x.jpg
 creating: lama-4540160/preview.lama-4540160@2x.jpg
 creating: lama-4540160/preview.lama-4540160@3x.jpg
+...
 ```
 
 As you see you can specify defaults, so you don't need to repeat yourself.
