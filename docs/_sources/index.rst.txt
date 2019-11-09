@@ -6,22 +6,16 @@
 Welcome to PyImgBatch's documentation!
 ======================================
 
-.. automodule:: run
-    :members:
 
-.. automodule:: imgbatch
-    :members:
-
-.. autoclass:: PyImgBatch
-    :members:
-    :special-members:
-    :private-members:
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-
+   quickstart
+   tutorials
+   parameters
+   pyimgbatch
 
 Indices and tables
 ==================
