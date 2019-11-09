@@ -34,7 +34,7 @@ setuptools.setup(
         "Topic :: Utilities"
     ],
     python_requires='>=3.6',
-    version="0.2.2",
+    version="0.2.5",
     # version_config={
     #     "version_format": "{tag}.dev{sha}",
     #     "starting_version": "0.1.0"
