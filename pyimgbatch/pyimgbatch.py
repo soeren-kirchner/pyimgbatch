@@ -14,7 +14,7 @@ from time import time
 from PIL import Image
 from PIL import ImageCms
 
-from .helper import to_int_or_none
+# from .helper import to_int_or_none
 
 
 WEBSETS = {'@2x': 2, '@3x': 3}
@@ -365,6 +365,14 @@ class PyImgBatch:
 
 
 class Size(object):
+    """[summary]
+
+    :param object: [description]
+    :type object: [type]
+    :raises Exception: [description]
+    :return: [description]
+    :rtype: [type]
+    """
     def __init__(self, *args):
         if len(args) == 1 and type(args[0]) is tuple:
             # TODO: to_int_or_none for tuple too
@@ -415,6 +423,8 @@ class ProgressBar(tqdm):
 
 
 class Out:
+    """Class description
+    """
 
     outfunction = print
     project_bar = None
@@ -424,9 +434,9 @@ class Out:
     def out(cls, *args):
         cls.outfunction(*args)
 
-    @classmethod
-    def __call__(cls, *args):
-        cls.out(*args)
+    # @classmethod
+    # def __call__(cls, *args):
+    #     cls.out(*args)
 
     @classmethod
     def init_project_bar(cls, disable=True):
@@ -444,3 +454,20 @@ class Out:
     def __del__(cls):
         cls.image_bar.close()
         cls.project_bar.close()
+
+
+def to_int_or_none(value, multiplier=1):
+    """[summary]
+
+    :param value: [description]
+    :type value: [type]
+    :param multiplier: [description], defaults to 1
+    :type multiplier: int, optional
+    :return: [description]
+    :rtype: [type]
+    """
+    try:
+        value = int(value) * multiplier
+        return value
+    except:
+        return None
