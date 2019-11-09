@@ -1,8 +1,0 @@
-[
-    { "height": 1000},
-    { "width": 200, "suffix": ".200.web@1x"},
-    { "width": 400, "suffix": ".200.web@2x", "format": "jpg" },
-    { "width": 600, "suffix": ".200.web@3x", "format": "jpg", "subfolder": false },
-
-    { "width": 150, "suffix": ".150.web", "webset": "@3x", "format": "jpg" }
-]

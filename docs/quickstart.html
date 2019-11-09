@@ -1,0 +1,379 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Quickstart &mdash; PyImgBatch 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tutorials" href="tutorials.html" />
+    <link rel="prev" title="Welcome to PyImgBatch’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> PyImgBatch
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage-on-command-line">Usage on command line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#project-files">Project Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-very-short-one">The very short one</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-short-one">The short one</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#full-image-project-file">Full image project file</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameters.html">Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyimgbatch.html">PyImgBatch</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyImgBatch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Quickstart</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/quickstart.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="quickstart">
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
+<p>PyImgBatch is a batch image processor for python including a command
+line interface.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>For installation open a terminal and type the following line into the
+command line.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pyimgbatch</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="usage-on-command-line">
+<h2>Usage on command line<a class="headerlink" href="#usage-on-command-line" title="Permalink to this headline">¶</a></h2>
+<p>The simplest usage is to change to the folder containing the images with</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">folder</span><span class="o">/</span><span class="n">wit</span><span class="o">/</span><span class="n">images</span>
+</pre></div>
+</div>
+<p>and type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pyimgbatch</span> <span class="o">--</span><span class="n">width</span> <span class="mi">300</span>
+</pre></div>
+</div>
+<p>This will resize all supported image files in the current folder to a
+width of 300 pixels respecting the aspect ratio of the source file. The
+results will be written to a “dest” subfolder.</p>
+<p>Alternatively, you can set a source folder with the images to be
+converted and/or a destination folder for the results as follow.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pyimgbatch</span> <span class="o">--</span><span class="n">source</span> <span class="n">source_folder</span> <span class="o">--</span><span class="n">dest</span> <span class="n">destination_folder</span> <span class="o">--</span><span class="n">height</span> <span class="mi">400</span>
+</pre></div>
+</div>
+<p>or shorter</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pyimgbatch</span> <span class="o">-</span><span class="n">s</span> <span class="n">source_folder</span> <span class="o">-</span><span class="n">d</span> <span class="n">destination_folder</span> <span class="o">--</span><span class="n">height</span> <span class="mi">400</span>
+</pre></div>
+</div>
+<p>This will convert the images from the <em>source_folder</em> to a height of
+400px and stores the results in the destination folder.</p>
+<p><em>Note: For every source image a subfolder will be created inside the
+destination_folder. To avoid this behavior use the –nosubfolder
+argument.</em></p>
+</div>
+<div class="section" id="project-files">
+<h2>Project Files<a class="headerlink" href="#project-files" title="Permalink to this headline">¶</a></h2>
+<p>One of PyImgBatch features is to create multiple different versions from
+given image files.</p>
+<p>For this, you can use project files. Project files are JSON files
+containing the specifications for the image processing.</p>
+<div class="section" id="the-very-short-one">
+<h3>The very short one<a class="headerlink" href="#the-very-short-one" title="Permalink to this headline">¶</a></h3>
+<p>Here an example of a very short one.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span> <span class="nt">&quot;width&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span> <span class="nt">&quot;suffix&quot;</span><span class="p">:</span> <span class="s2">&quot;.w1000&quot;</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="nt">&quot;height&quot;</span><span class="p">:</span> <span class="mi">1200</span><span class="p">,</span> <span class="nt">&quot;suffix&quot;</span><span class="p">:</span> <span class="s2">&quot;.h1200&quot;</span> <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>For example (may the project named “myprj.json”):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pyimgbatch</span> <span class="o">-</span><span class="n">c</span> <span class="n">myprj</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<p>produces the following output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">processing</span><span class="p">:</span> <span class="n">french</span><span class="o">-</span><span class="n">bulldog</span><span class="o">-</span><span class="mf">4530685.</span><span class="n">jpg</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">french</span><span class="o">-</span><span class="n">bulldog</span><span class="o">-</span><span class="mf">4530685.</span><span class="n">w1000</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">french</span><span class="o">-</span><span class="n">bulldog</span><span class="o">-</span><span class="mf">4530685.</span><span class="n">h1200</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">processing</span><span class="p">:</span> <span class="n">coast</span><span class="o">-</span><span class="mf">4478424.</span><span class="n">jpg</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">coast</span><span class="o">-</span><span class="mf">4478424.</span><span class="n">w1000</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">coast</span><span class="o">-</span><span class="mf">4478424.</span><span class="n">h1200</span><span class="o">.</span><span class="n">jpg</span>
+<span class="o">...</span>
+<span class="n">processing</span><span class="p">:</span> <span class="n">beaded</span><span class="o">-</span><span class="mi">2137080</span><span class="n">_1920</span><span class="o">-</span><span class="n">cmyk</span><span class="o">-</span><span class="n">iso</span><span class="o">-</span><span class="n">eci</span><span class="o">.</span><span class="n">tif</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">beaded</span><span class="o">-</span><span class="mi">2137080</span><span class="n">_1920</span><span class="o">-</span><span class="n">cmyk</span><span class="o">-</span><span class="n">iso</span><span class="o">-</span><span class="n">eci</span><span class="o">.</span><span class="n">w1000</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">beaded</span><span class="o">-</span><span class="mi">2137080</span><span class="n">_1920</span><span class="o">-</span><span class="n">cmyk</span><span class="o">-</span><span class="n">iso</span><span class="o">-</span><span class="n">eci</span><span class="o">.</span><span class="n">h1200</span><span class="o">.</span><span class="n">jpg</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>and creates two images per source images, resized to the specified width
+or height with suffix added to the original name.</p>
+</div>
+<div class="section" id="the-short-one">
+<h3>The short one<a class="headerlink" href="#the-short-one" title="Permalink to this headline">¶</a></h3>
+<p>Imagine, you need to create different sizes for all your images for
+your web project. For instance, you need the images in widths 180px,
+300px, 400px and one in a height of 800 and each 2x and 3x the size for
+higher pixel density display like in smartphones.</p>
+<p>An example could look as follow.</p>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;web set&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;comment&quot;</span><span class="p">:</span> <span class="s2">&quot;some sample pictures&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;webset/source&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;webset/dest&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;web.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;configs&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span> <span class="nt">&quot;width&quot;</span><span class="p">:</span> <span class="mi">180</span><span class="p">,</span> <span class="nt">&quot;suffix&quot;</span><span class="p">:</span> <span class="s2">&quot;.w180&quot;</span><span class="p">,</span> <span class="nt">&quot;webset&quot;</span><span class="p">:</span> <span class="s2">&quot;@3x&quot;</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="nt">&quot;width&quot;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span> <span class="nt">&quot;suffix&quot;</span><span class="p">:</span> <span class="s2">&quot;.w300&quot;</span><span class="p">,</span> <span class="nt">&quot;webset&quot;</span><span class="p">:</span> <span class="s2">&quot;@3x&quot;</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="nt">&quot;width&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span> <span class="nt">&quot;suffix&quot;</span><span class="p">:</span> <span class="s2">&quot;.w400&quot;</span><span class="p">,</span> <span class="nt">&quot;webset&quot;</span><span class="p">:</span> <span class="s2">&quot;@3x&quot;</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="nt">&quot;height&quot;</span><span class="p">:</span> <span class="mi">800</span><span class="p">,</span> <span class="nt">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;preview.&quot;</span><span class="p">,</span> <span class="nt">&quot;webset&quot;</span><span class="p">:</span> <span class="s2">&quot;@3x&quot;</span> <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This will create 12 destination images for each imput image. For a image
+“lama-4540160.jpg” you get:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">lama</span><span class="o">-</span><span class="mi">4540160</span><span class="o">/</span><span class="n">web</span><span class="o">.</span><span class="n">lama</span><span class="o">-</span><span class="mf">4540160.</span><span class="n">w180</span><span class="nd">@1x</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">lama</span><span class="o">-</span><span class="mi">4540160</span><span class="o">/</span><span class="n">web</span><span class="o">.</span><span class="n">lama</span><span class="o">-</span><span class="mf">4540160.</span><span class="n">w180</span><span class="nd">@2x</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">lama</span><span class="o">-</span><span class="mi">4540160</span><span class="o">/</span><span class="n">web</span><span class="o">.</span><span class="n">lama</span><span class="o">-</span><span class="mf">4540160.</span><span class="n">w180</span><span class="nd">@3x</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">lama</span><span class="o">-</span><span class="mi">4540160</span><span class="o">/</span><span class="n">web</span><span class="o">.</span><span class="n">lama</span><span class="o">-</span><span class="mf">4540160.</span><span class="n">w300</span><span class="nd">@1x</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">lama</span><span class="o">-</span><span class="mi">4540160</span><span class="o">/</span><span class="n">web</span><span class="o">.</span><span class="n">lama</span><span class="o">-</span><span class="mf">4540160.</span><span class="n">w300</span><span class="nd">@2x</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">lama</span><span class="o">-</span><span class="mi">4540160</span><span class="o">/</span><span class="n">web</span><span class="o">.</span><span class="n">lama</span><span class="o">-</span><span class="mf">4540160.</span><span class="n">w300</span><span class="nd">@3x</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">lama</span><span class="o">-</span><span class="mi">4540160</span><span class="o">/</span><span class="n">web</span><span class="o">.</span><span class="n">lama</span><span class="o">-</span><span class="mf">4540160.</span><span class="n">w400</span><span class="nd">@1x</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">lama</span><span class="o">-</span><span class="mi">4540160</span><span class="o">/</span><span class="n">web</span><span class="o">.</span><span class="n">lama</span><span class="o">-</span><span class="mf">4540160.</span><span class="n">w400</span><span class="nd">@2x</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">lama</span><span class="o">-</span><span class="mi">4540160</span><span class="o">/</span><span class="n">web</span><span class="o">.</span><span class="n">lama</span><span class="o">-</span><span class="mf">4540160.</span><span class="n">w400</span><span class="nd">@3x</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">lama</span><span class="o">-</span><span class="mi">4540160</span><span class="o">/</span><span class="n">preview</span><span class="o">.</span><span class="n">lama</span><span class="o">-</span><span class="mi">4540160</span><span class="nd">@1x</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">lama</span><span class="o">-</span><span class="mi">4540160</span><span class="o">/</span><span class="n">preview</span><span class="o">.</span><span class="n">lama</span><span class="o">-</span><span class="mi">4540160</span><span class="nd">@2x</span><span class="o">.</span><span class="n">jpg</span>
+<span class="n">creating</span><span class="p">:</span> <span class="n">lama</span><span class="o">-</span><span class="mi">4540160</span><span class="o">/</span><span class="n">preview</span><span class="o">.</span><span class="n">lama</span><span class="o">-</span><span class="mi">4540160</span><span class="nd">@3x</span><span class="o">.</span><span class="n">jpg</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>As you see you can specify defaults, so you don’t need to repeat
+yourself.</p>
+<p>The more specific option is used instead of the more general one. So
+in this example, all images get the prefix “web.” except the last,
+because the more specific prefix is here given as “preview.”</p>
+<p><em>Hint: The file names are a little strange because I’ve downloaded the
+from the free image stock `pixabay &lt;https://pixabay.com&gt;`__ and I
+haven’t changed the Name so you can search for the pics or the
+photographer if you want.</em></p>
+</div>
+<div class="section" id="full-image-project-file">
+<h3>Full image project file<a class="headerlink" href="#full-image-project-file" title="Permalink to this headline">¶</a></h3>
+<p>looks as follow.</p>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;comment&quot;</span><span class="p">:</span> <span class="s2">&quot;pyImgBatch demo project&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;debug&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;no-progess&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="nt">&quot;projects&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;web set&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;comment&quot;</span><span class="p">:</span> <span class="s2">&quot;some sample pictures&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;webset/source&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;webset/dest&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;web.&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;configs&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span> <span class="nt">&quot;width&quot;</span><span class="p">:</span> <span class="mi">180</span><span class="p">,</span> <span class="nt">&quot;suffix&quot;</span><span class="p">:</span> <span class="s2">&quot;.w180&quot;</span><span class="p">,</span> <span class="nt">&quot;webset&quot;</span><span class="p">:</span> <span class="s2">&quot;@3x&quot;</span> <span class="p">},</span>
+                <span class="p">{</span> <span class="nt">&quot;width&quot;</span><span class="p">:</span> <span class="mi">300</span><span class="p">,</span> <span class="nt">&quot;suffix&quot;</span><span class="p">:</span> <span class="s2">&quot;.w300&quot;</span><span class="p">,</span> <span class="nt">&quot;webset&quot;</span><span class="p">:</span> <span class="s2">&quot;@3x&quot;</span> <span class="p">},</span>
+                <span class="p">{</span> <span class="nt">&quot;width&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span> <span class="nt">&quot;suffix&quot;</span><span class="p">:</span> <span class="s2">&quot;.w400&quot;</span><span class="p">,</span> <span class="nt">&quot;webset&quot;</span><span class="p">:</span> <span class="s2">&quot;@3x&quot;</span> <span class="p">},</span>
+                <span class="p">{</span> <span class="nt">&quot;height&quot;</span><span class="p">:</span> <span class="mi">800</span><span class="p">,</span> <span class="nt">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;preview.&quot;</span><span class="p">,</span> <span class="nt">&quot;webset&quot;</span><span class="p">:</span> <span class="s2">&quot;@3x&quot;</span> <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;images to thumbnails&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;to-thumbnails/originals&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;dest&quot;</span><span class="p">:</span> <span class="s2">&quot;to-thumbnails/thumbnails&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;subfolder&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nt">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;thumb.&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;configs&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="nt">&quot;height&quot;</span><span class="p">:</span> <span class="mi">300</span><span class="p">},</span>
+                <span class="p">{</span><span class="nt">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;smallthumb.&quot;</span><span class="p">,</span> <span class="nt">&quot;height&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This project contains two projects.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tutorials.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to PyImgBatch’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Sören Kirchner
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

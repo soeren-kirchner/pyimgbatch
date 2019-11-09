@@ -3,6 +3,9 @@ import setuptools
 with open("README.md", "r") as readme:
     long_description = readme.read()
 
+with open('requirements.txt') as req_file:
+    requirements = req_file.read().splitlines()
+
 setuptools.setup(
     name="pyimgbatch",
     author="Sören Kirchner",
@@ -11,7 +14,8 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/soeren-kirchner/pyimgbatch",
-    #packages=['pyimgbatch'],
+    # packages=['pyimgbatch'],
+    install_requires=requirements,
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3.6",
@@ -30,11 +34,12 @@ setuptools.setup(
         "Topic :: Utilities"
     ],
     python_requires='>=3.6',
-    version_config={
-        "version_format": "{tag}.dev{sha}",
-        "starting_version": "0.1.0"
-    },
-    setup_requires=['better-setuptools-git-version'],
+    version="0.2.2",
+    # version_config={
+    #     "version_format": "{tag}.dev{sha}",
+    #     "starting_version": "0.1.0"
+    # },
+    # setup_requires=['better-setuptools-git-version'],
     entry_points={
         'console_scripts': [
             'pyimgbatch = pyimgbatch.__main__:main'

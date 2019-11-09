@@ -22,7 +22,7 @@ share/python-wheels/
 MANIFEST
 
 # Sphinx documentation
-docs/_build/
+docsrc/_build/
 
 # vscode
 .vscode/
@@ -35,3 +35,5 @@ docs/_build/
 examples/**/dest
 pyimgbatch.log
 
+# private playground
+playground/

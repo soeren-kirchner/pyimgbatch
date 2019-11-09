@@ -1,0 +1,31 @@
+{
+    "comment": "pyImgBatch demo project",
+    "debug": true,
+    "no-progess": false,
+    "projects": [
+        {
+            "name": "web set",
+            "comment": "some sample pictures",
+            "source": "webset/source",
+            "dest": "webset/dest",
+            "prefix": "web.",
+            "configs": [
+                { "width": 180, "suffix": ".w180", "webset": "@3x" },
+                { "width": 300, "suffix": ".w300", "webset": "@3x" },
+                { "width": 400, "suffix": ".w400", "webset": "@3x" },
+                { "height": 800, "prefix": "preview.", "webset": "@3x" }
+            ]
+        },
+        {
+            "name": "images to thumbnails",
+            "source": "to-thumbnails/originals",
+            "dest": "to-thumbnails/thumbnails",
+            "subfolder": false,
+            "prefix": "thumb.",
+            "configs": [
+                {"height": 300}, 
+                {"prefix": "smallthumb.", "height": 200}
+            ]
+        }
+    ]
+}

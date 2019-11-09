@@ -1,0 +1,5 @@
+PyImgBatch
+==========
+
+.. automodule:: pyimgbatch
+    :members:
