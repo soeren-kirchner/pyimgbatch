@@ -14,8 +14,6 @@ from time import time
 from PIL import Image
 from PIL import ImageCms
 
-# from .helper import to_int_or_none
-
 
 WEBSETS = {'@2x': 2, '@3x': 3}
 SUPPORTED_FILES = ['*.jpg', '*.jpeg', '*.png', '*.tif']
@@ -51,12 +49,13 @@ class CONFKEY(metaclass=CONSTANTS):
 
 class OPTIONKEY(metaclass=CONSTANTS):
     SOURCE, DEST = 'source', 'dest'
-    CONFIGFILE = 'configfile'
+    # CONFIGFILE = 'configfile'
     OVERRIDE = 'override'
     NOPROGRESS = 'no_progress'
     DEBUG = 'debug'
     PROJECTS, CONFIGS = 'projects', 'configs'
     NAME = 'name'
+    PROJECT = 'project'
 
 
 class Entries(object):
@@ -94,13 +93,13 @@ class Entries(object):
     def dest(self):
         return self._value(OPTIONKEY.DEST, OPTIONKEY.DEST)
 
-    @property  # TODO: replace
-    def configfile(self):
-        return self._value(OPTIONKEY.CONFIGFILE, 'imagebatch.json')
+    # @property  # TODO: replace
+    # def configfile(self):
+    #     return self._value(OPTIONKEY.CONFIGFILE, 'imagebatch.json')
 
     @property
     def project_file_name(self):
-        return self._value('project', 'pyimgbatch.json')  # TODO: Constants
+        return self._value(OPTIONKEY.PROJECT, 'pyimgbatch.json')
 
     @property
     def override(self):
@@ -365,14 +364,7 @@ class PyImgBatch:
 
 
 class Size(object):
-    """[summary]
 
-    :param object: [description]
-    :type object: [type]
-    :raises Exception: [description]
-    :return: [description]
-    :rtype: [type]
-    """
     def __init__(self, *args):
         if len(args) == 1 and type(args[0]) is tuple:
             # TODO: to_int_or_none for tuple too
@@ -434,10 +426,6 @@ class Out:
     def out(cls, *args):
         cls.outfunction(*args)
 
-    # @classmethod
-    # def __call__(cls, *args):
-    #     cls.out(*args)
-
     @classmethod
     def init_project_bar(cls, disable=True):
         cls.project_bar = ProgressBar(1, disable=disable)
@@ -457,15 +445,6 @@ class Out:
 
 
 def to_int_or_none(value, multiplier=1):
-    """[summary]
-
-    :param value: [description]
-    :type value: [type]
-    :param multiplier: [description], defaults to 1
-    :type multiplier: int, optional
-    :return: [description]
-    :rtype: [type]
-    """
     try:
         value = int(value) * multiplier
         return value
