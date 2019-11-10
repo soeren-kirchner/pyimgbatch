@@ -3,19 +3,22 @@ import setuptools
 with open("README.md", "r") as readme:
     long_description = readme.read()
 
-with open('requirements.txt') as req_file:
-    requirements = req_file.read().splitlines()
+# with open('requirements.txt') as req_file:
+#     requirements = req_file.read().splitlines()
 
 setuptools.setup(
     name="pyimgbatch",
     author="Sören Kirchner",
     author_email="sk@tologo.de",
-    description="A small example package",
+    description="PyImgBatch is a batch image processor for python including a command line interface.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/soeren-kirchner/pyimgbatch",
     # packages=['pyimgbatch'],
-    install_requires=requirements,
+    install_requires=[
+        "Pillow>=6.2.1",
+        "tqdm>=4.36.1"
+    ],
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3.6",
@@ -34,7 +37,7 @@ setuptools.setup(
         "Topic :: Utilities"
     ],
     python_requires='>=3.6',
-    version="0.2.5",
+    version="0.2.6post2",
     # version_config={
     #     "version_format": "{tag}.dev{sha}",
     #     "starting_version": "0.1.0"

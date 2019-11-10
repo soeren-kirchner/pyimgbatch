@@ -21,7 +21,7 @@ The simplest usage is to change to the folder containing the images with
 
 ::
 
-    cd /folder/wit/images
+    cd /folder/with/images
 
 and type
 
