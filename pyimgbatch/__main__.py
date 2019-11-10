@@ -52,9 +52,11 @@ def get_args():
 
     image_manipulation_group = parser.add_argument_group('image manipulation')
     image_manipulation_group.add_argument('--width', type=int,
-                                          default=None, help='...')
+                                          default=None, help='width of the destination image.')
     image_manipulation_group.add_argument('--height', type=int,
-                                          default=None, help='...')
+                                          default=None, help='height of the destination image.')
+    image_manipulation_group.add_argument('--resample', type=str, choices=["none", "bilinear", "bicubic", "hamming", "box", "antialias"],
+                                          default="antialias", help='resample arlgorithm used for resizing, defaults to "antialias"')
 
     return parser.parse_args()
 
