@@ -9,12 +9,18 @@ For installation open a terminal and type the following line into the command li
 pip install pyimgbatch
 ```
 
+## Documentation
+
+For further information please read the documentation: 
+
+[https://soeren-kirchner.github.io/pyimgbatch/quickstart.html](https://soeren-kirchner.github.io/pyimgbatch/quickstart.html)
+
 ## Usage on command line
 
 The simplest usage is to change to the folder containing the images with
 
 ```
-cd /folder/wit/images
+cd /folder/with/images
 ```
 and type 
 
@@ -112,7 +118,7 @@ creating: lama-4540160/preview.lama-4540160@3x.jpg
 As you see you can specify defaults, so you don't need to repeat yourself.
 The more specific option is used instead of the more general one. So in this example, all images get the prefix "web." except the last, because the more specific prefix is here given as "preview."
 
-*Hint: The file names are a little strange because I've downloaded the from the free image stock [pixabay](https://pixabay.com) and I haven't changed the Name so you can search for the pics or the photographer if you want.*
+*Hint: The file names are a little strange because I've downloaded the images from the free image stock [pixabay](https://pixabay.com) and I haven't changed the Name so you can search for the pics or the photographer if you want.*
 
 ### Full image project file
 
