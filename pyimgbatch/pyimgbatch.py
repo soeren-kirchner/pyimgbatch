@@ -5,7 +5,8 @@ import io
 from os import makedirs
 from os.path import basename, join, exists, abspath
 from glob import glob
-from tqdm import tqdm
+# from contextlib import suppress
+
 
 from pprint import pformat
 
@@ -13,6 +14,7 @@ from time import time
 
 from PIL import Image
 from PIL import ImageCms
+from tqdm import tqdm
 
 
 WEBSETS = {'@2x': 2, '@3x': 3}
@@ -24,6 +26,8 @@ RESAMPLE_MODES = {'none': Image.NEAREST,
                   'hamming': Image.HAMMING,
                   'box': Image.BOX,
                   'antialias': Image.ANTIALIAS}
+
+debug = logging.debug
 
 
 class CONSTANTS(type):
@@ -235,7 +239,7 @@ class Project(Entries):
                 configs.extend(self._create_webset_entries(entry))
             else:
                 configs.append(entry)
-        logging.debug("raw config:")
+        debug("raw config:")
         logging.debug(pformat(raw_config))
         logging.debug("solved config:")
         logging.debug(pformat(configs))
@@ -305,7 +309,7 @@ class CurrentImage(object):
         with Image.open(self.source_filename) as image:
             if self.config_entry.mode != image.mode:
                 logging.debug(f"Source and destination mode differ. Source: {image.mode}, Destination: {self.config_entry.mode}")
-                self.convert(image)
+                image = self.convert(image)
 
             profile = self.get_image_profile(image)
             if profile is not None:
@@ -327,17 +331,18 @@ class CurrentImage(object):
         source_profile = self.get_image_profile(image)
         if source_profile is not None:
             destination_profile = self.profile()
-            logging.debug(f"Transforming color profiles. Source: {self.profile_name(source_profile)}, Destination: {self.profile_name(destination_profile)} ")
+            inMode = image.mode
+            outMode = self.config_entry.mode
+            logging.debug(f"Transforming {self.profile_name(source_profile)} -> {self.profile_name(destination_profile)}, {inMode} -> {outMode}")
             transform = ImageCms.buildTransform(inputProfile=source_profile,
                                                 outputProfile=destination_profile,
-                                                inMode=image.mode,
-                                                outMode=self.config_entry.mode,
+                                                inMode=inMode,
+                                                outMode=outMode,
                                                 renderingIntent=ImageCms.INTENT_RELATIVE_COLORIMETRIC)
-            ImageCms.applyTransform(image, transform)
+            return ImageCms.applyTransform(image, transform)
         else:
             logging.debug(f"Converting color modes. Source: {image.mode}, Destination: {self.config_entry.mode}")
-            image = image.convert(mode=self.config_entry.mode)
-        return image
+            return image.convert(mode=self.config_entry.mode)
 
     def get_image_profile(self, image):
         try:
@@ -388,7 +393,6 @@ class Size(object):
         return self._size
 
     def destination_size(self, designated_size):
-        # print(designated_size)
         if designated_size.width is not None and designated_size.height is not None:
             return designated_size
         elif designated_size.width is None and designated_size.height is not None:
@@ -446,7 +450,6 @@ class Out:
 
 def to_int_or_none(value, multiplier=1):
     try:
-        value = int(value) * multiplier
-        return value
+        return int(value) * multiplier
     except:
         return None
