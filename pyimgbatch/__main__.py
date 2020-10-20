@@ -1,3 +1,4 @@
+import sys, os
 import argparse
 import logging
 # from pprint import pprint
@@ -7,15 +8,17 @@ from .pyimgbatch import PyImgBatch
 def main():
     """simply main
     """
-    logging.basicConfig(level=logging.DEBUG,
-                        filename='pyimgbatch.log',
+    args = get_args()
+    logging_level = logging.DEBUG if not args.nolog else logging.ERROR
+    logging.basicConfig(level=logging_level,
+                        filename=args.logfile,
                         filemode='w',
                         format='%(name)s - %(levelname)s - %(message)s')
-    args = get_args()
     if args.debug:
-        logging.getLogger().setLevel(logging.DEBUG)
+        logging.getLogger().setLevel(logging_level)
     logging.debug(args)
-
+    if args.silent:
+        sys.stdout = open(os.devnull, 'w')
     pib = PyImgBatch(prepare_arguments(args))
     pib.exec()
 
@@ -48,7 +51,12 @@ def get_args():
                               default=False, help='disables the progress bars')
     output_group.add_argument('--debug', action='store_true',
                               default=False, help='enables debugging level.')
-    # TODO: logging, logfile
+    output_group.add_argument('--logfile', type=str,
+                              default='pyimgbatch.log', help='log destination file.')
+    output_group.add_argument('--nolog', action='store_true',
+                              default=False, help='enables log saved in file.')
+    output_group.add_argument('--silent', action='store_true',
+                              default=True, help='silent execution with no output so stdout.')
 
     image_manipulation_group = parser.add_argument_group('image manipulation')
     image_manipulation_group.add_argument('--width', type=int,
